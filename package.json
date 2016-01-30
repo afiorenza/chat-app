@@ -1,0 +1,19 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "Chat application using react, react-native and web-sockets.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afiorenza/chat-app.git"
+  },
+  "author": "AF",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/afiorenza/chat-app/issues"
+  },
+  "homepage": "https://github.com/afiorenza/chat-app#readme"
+}
