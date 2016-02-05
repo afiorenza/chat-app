@@ -7,14 +7,18 @@ var Navbar = require('react-bootstrap').Navbar;
 var ChatInput = require('../components/chat-input');
 var ChatList = require('../components/chat-list');
 
-var data = [
-    {content: 'aaaaaaaaaaaaaaaaaaa'},
-    {content: 'bbbbbbbbbbbbbbbbbbb'},
-    {content: 'ccccccccccccccccccc'},
-    {content: 'ddddddddddddddddddd'}
-];
+// Services
+var chatService = require('../services/chat-service');
+
+console.log(chatService);
 
 var ChatScreen = React.createClass({
+
+    getInitialState: function () {
+        return {
+            messages: []
+        };
+    },
 
     render: function () {
         return (
@@ -38,7 +42,7 @@ var ChatScreen = React.createClass({
 
     renderChatList: function () {
         return (
-            <ChatList messages={data} />
+            <ChatList messages={this.state.messages} />
         );
     },
 

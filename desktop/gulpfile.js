@@ -3,6 +3,7 @@ var	browserify = require('browserify');
 var browserSync = require('browser-sync');
 var changed = require('gulp-changed');
 var	concat = require('gulp-concat');
+var exec = require('gulp-exec');
 var	gulp = require('gulp');
 var jsHint = require('gulp-jshint');
 var	reactify = require('reactify');
@@ -88,6 +89,15 @@ gulp.task('browser-sync', function () {
     gulp.watch(config.js.watch, ['js-watch']);
 });
 
+gulp.task('run-service', function () {
+
+    exec('node backend/index.js', function (error, stdout, stderr) {
+        console.log('Error: ', error);
+        console.log('stdout: ', stdout);
+        console.log('stderr: ', stderr);
+    });
+});
+
 gulp.task('lint', function () {
     gulp.src(config.js.main)
         .pipe(jsHint())
@@ -95,5 +105,5 @@ gulp.task('lint', function () {
 });
 
 gulp.task('default', function () {
-    run('html', 'sass', 'js', 'browser-sync');
+    run('html', 'sass', 'js', 'run-service','browser-sync');
 });

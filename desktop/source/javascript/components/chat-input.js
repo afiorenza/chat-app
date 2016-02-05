@@ -9,12 +9,12 @@ var ChatInput = React.createClass({
 
     render: function () {
         return (
-            <form {...this.getProps()}>
+            <div {...this.getProps()}>
                 <div className="chat-input--input-wrapper">
                     <Input {...this.getInputProps()} />
                 </div>
                 <Button {...this.getSendButtonProps()}>Send!</Button>
-            </form>
+            </div>
         );
     },
 
