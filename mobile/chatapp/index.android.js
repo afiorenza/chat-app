@@ -19,7 +19,7 @@ class chatapp extends Component {
           Welcome to React Native!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.android.js
+            Tu madre
         </Text>
         <Text style={styles.instructions}>
           Shake or press menu button for dev menu

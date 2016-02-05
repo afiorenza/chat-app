@@ -1,0 +1,22 @@
+.chat-list {
+
+    &--list {
+      border: 1px solid black;
+      border-bottom: 0;
+      border-radius: 5px;
+    }
+
+    &--message {
+      border-bottom: 1px solid black;
+      font-size: 16px;
+      padding: 7px;
+
+      &:even {
+        background-color: red;
+      }
+
+      &:odd {
+        background-color: black;
+      }
+    }
+}
