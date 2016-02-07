@@ -20,24 +20,18 @@ var GetNameModal = React.createClass({
 
     render: function () {
         return (
-            <div>
-                <Modal show={this.props.show}>
-                    <Modal.Dialog>
-                        <Modal.Body>
-                            <Input {...this.getInputProps()} />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button {...this.getButtonProps()}>Start chatting!</Button>
-                        </Modal.Footer>
-                    </Modal.Dialog>
-                </Modal>
-            </div>
+            <Modal show={this.props.show}>
+                <Modal.Body>
+                    <Input {...this.getInputProps()} />
+                    <Button {...this.getButtonProps()}>Go to chat!</Button>
+                </Modal.Body>
+            </Modal>
         );
     },
 
     getInputProps: function () {
         return {
-            hint: 'Write here your user name...',
+            placeholder: 'Write here your user name...',
             ref: 'nameInput',
             type: 'text'
         };
@@ -45,6 +39,7 @@ var GetNameModal = React.createClass({
 
     getButtonProps: function () {
         return {
+            bsStyle: 'primary',
             onClick: this.handleSubmitButtonClick  
         };
     },
@@ -52,8 +47,8 @@ var GetNameModal = React.createClass({
     handleSubmitButtonClick: function () {
         var userName = this.refs.nameInput.getValue();
 
-        if (!_.isEmpty(userName) && this.props.onHide) {
-            this.props.onHide(userName);
+        if (!_.isEmpty(userName) && this.props.onClose) {
+            this.props.onClose(userName);
         }
     }
 });

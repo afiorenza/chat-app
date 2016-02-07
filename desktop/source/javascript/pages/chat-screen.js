@@ -14,15 +14,20 @@ var chatService = require('../services/chat-service');
 
 var ChatScreen = React.createClass({
 
+    propTypes: {
+        userName: React.PropTypes.string.isRequired
+    },
+
     getInitialState: function () {
         return {
             messages: [],
-            serviceState: 'Error connecting with the service',
-            userName: undefined
+            serviceState: undefined
         };
     },
 
     componentDidMount: function () {
+        chatService.initialize(this.props.userName);
+
         chatService.onConnect(function (serviceState) {
             this.setState({
                 serviceState: serviceState
@@ -39,6 +44,10 @@ var ChatScreen = React.createClass({
                messages: newMessages
             });
         }.bind(this));
+    },
+
+    componentWillUnmount: function () {
+        chatService.onDisconnect();
     },
 
     render: function () {
@@ -95,7 +104,8 @@ var ChatScreen = React.createClass({
         return {
             className: 'chat-screen--input-block',
             disabled: (this.state.serviceState === 'error'),
-            onSendButtonClick: this.sendMessage
+            onSendButtonClick: this.sendMessage,
+            username: this.props.userName
         };
     },
 
@@ -142,17 +152,6 @@ var ChatScreen = React.createClass({
     sendMessage: function (message) {
         chatService.sendMessage(message);
     }
-
-    /*  ,
-        showModal: function () {
-            return !(this.state.userName);
-        },
-
-        handleModalClose: function (userName) {
-            this.setState({
-               userName: userName
-        });
-    }*/
 });
 
 module.exports = ChatScreen;

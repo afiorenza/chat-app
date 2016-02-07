@@ -11,7 +11,8 @@ var ChatInput = React.createClass({
 
     propTypes: {
         disabled: React.PropTypes.bool,
-        onSendButtonClick: React.PropTypes.func
+        onSendButtonClick: React.PropTypes.func,
+        username: React.PropTypes.string
     },
 
     getInitialState: function () {
@@ -43,7 +44,7 @@ var ChatInput = React.createClass({
             disabled: this.props.disabled,
             onChange: this.handleInputChange,
             onKeyDown: this.handleInputKeyDown,
-            placeholder: 'Enter text...',
+            placeholder: this.props.username + ' enter text...',
             ref: 'messageInput',
             value: this.state.inputValue,
             type: 'text'
