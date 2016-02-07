@@ -1,5 +1,6 @@
 var http = require('http');
 var WebSocketServer = require('websocket').server;
+var constants = require('./constants');
 
 // Helpers Todo: manage how make this work with references.
 //var retrieveMessage = require('./helpers/retrieve-message');
@@ -27,16 +28,12 @@ wsServer.on('request', function(request) {
         var parsedMessage = JSON.parse(message.utf8Data);
 
         switch (parsedMessage.type) {
-            case 'message-retrieve':
+            case constants.MESSAGE_RETRIEVE:
                 retrieveMessage(parsedMessage);
                 break;
 
-            case 'user-connected':
+            case constants.USER_CONNECTED:
                 index = userConnection(connection, parsedMessage);
-                break;
-
-            case 'user-disconnected':
-                userDisconnection(clients, parsedMessage);
                 break;
 
             default:
@@ -58,7 +55,7 @@ function retrieveMessage (message) {
 
         client.connection.sendUTF(
             JSON.stringify({
-                type: 'message-retrieve',
+                type: constants.MESSAGE_RETRIEVE,
                 data: {
                     time: (new Date()).getTime(),
                     text: message.data,
@@ -79,15 +76,13 @@ function userConnection (connection, message) {
     return clients.length;
 }
 
-function userDisconnection () {}
-
 function sendConnectedUsers () {
     var connectedUsers = getConnectedUsers();
 
     clients.map(function (client) {
         client.connection.sendUTF(
             JSON.stringify({
-                type: 'connected-users',
+                type: constants.USER_CONNECTIONS,
                 data: {
                     total: connectedUsers.length,
                     users: connectedUsers

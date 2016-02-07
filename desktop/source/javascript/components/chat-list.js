@@ -40,7 +40,6 @@ var ChatList = React.createClass({
     },
 
     getMessageProps: function (message, index) {
-        console.log(message);
         return {
             className: 'chat-list--message',
             key: index,

@@ -104,7 +104,7 @@ var ChatScreen = React.createClass({
         return {
             className: 'chat-screen--input-block',
             disabled: (this.state.serviceState === 'error'),
-            onSendButtonClick: this.sendMessage,
+            onSendButtonClick: this.handleSendButtonClick,
             username: this.props.userName
         };
     },
@@ -149,7 +149,7 @@ var ChatScreen = React.createClass({
         return messages[this.state.serviceState];
     },
 
-    sendMessage: function (message) {
+    handleSendButtonClick: function (message) {
         chatServiceInstance.sendMessage(message);
     }
 });

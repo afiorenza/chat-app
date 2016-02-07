@@ -1,3 +1,5 @@
+var constants = require('./constants');
+
 window.WebSocket = window.WebSocket || window.MozWebSocket;
 
 var chatService = function (user) {
@@ -18,7 +20,7 @@ chatService.prototype.onConnect = function (callback) {
     this.getConnection().onopen = function () {
         this.getConnection().send(
             JSON.stringify({
-                'type': 'user-connected',
+                'type': constants.USER_CONNECTED,
                 'user': this.user
             })
         );
@@ -41,17 +43,15 @@ chatService.prototype.receiveMessage = function (messageReceived, userConnection
         if (message.data) {
             var parsedMessage = JSON.parse(message.data);
         }
-        console.log('type: ', parsedMessage.type);
-        console.log('data: ', parsedMessage.data);
+
         switch (parsedMessage.type) {
-            case 'message-retrieve':
-                console.log('recibio mensaje');
+            case constants.MESSAGE_RETRIEVE:
                 if(messageReceived && message) {
                     messageReceived(parsedMessage.data);
                 }
                 break;
 
-            case 'connected-users':
+            case constants.USER_CONNECTIONS:
                 if(userConnection && message) {
                     userConnection(parsedMessage.data);
                 }
@@ -67,7 +67,7 @@ chatService.prototype.sendMessage = function (message) {
     this.getConnection().send(
         JSON.stringify({
             'data': message,
-            'type': 'message-retrieve',
+            'type': constants.MESSAGE_RETRIEVE,
             'user': this.user
         })
     );
