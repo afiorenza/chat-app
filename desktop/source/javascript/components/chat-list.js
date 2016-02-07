@@ -20,7 +20,7 @@ var ChatList = React.createClass({
     renderMessage: function (message, index) {
         return (
             <li {...this.getMessageProps(message, index)}>
-                {message.content}
+                {message.data}
             </li>
         );
     },

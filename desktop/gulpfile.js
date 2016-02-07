@@ -105,5 +105,5 @@ gulp.task('lint', function () {
 });
 
 gulp.task('default', function () {
-    run('html', 'sass', 'js', 'run-service','browser-sync');
+    run('html', 'sass', 'js', /*'run-service',*/'browser-sync');
 });

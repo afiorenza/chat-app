@@ -6,8 +6,31 @@
     padding: 10px;
     width: 80%;
 
-    &--input-block {
-        margin: 0 auto;
-        width: 74%;
+    &--input-block {}
+
+    &--left-block {
+        display: inline-block;
+        width: 77%;
+    }
+
+    &--service-state {
+        position: relative;
+        bottom: 13px;
+        left: 13px;
+        color: gray;
+
+        &_error {
+            color: red;
+        }
+
+        &_successful {
+            color: green;
+        }
+    }
+
+
+    &--right-block {
+        display: inline-block;
+        width: 20%;
     }
 }

@@ -1,11 +1,23 @@
 var React = require('react');
 var classNames = require('classnames');
+var _ = require('lodash');
 
 // React-Bootstrap components
 var Button = require('react-bootstrap').Button;
 var Input = require('react-bootstrap').Input;
 
 var ChatInput = React.createClass({
+
+    propTypes: {
+        disabled: React.PropTypes.bool,
+        onSendButtonClick: React.PropTypes.func
+    },
+
+    getInitialState: function () {
+        return {
+            inputValue: ''
+        };
+    },
 
     render: function () {
         return (
@@ -19,8 +31,7 @@ var ChatInput = React.createClass({
     },
 
     getProps: function () {
-        return{
-            action: '',
+        return {
             className: this.getClass()
         };
     },
@@ -28,7 +39,11 @@ var ChatInput = React.createClass({
     getInputProps: function () {
         return {
             className: 'chat-input--input',
-            placeholder: 'Enter text',
+            disabled: this.props.disabled,
+            onChange: this.handleInputChange,
+            placeholder: 'Enter text...',
+            ref: 'messageInput',
+            value: this.state.inputValue,
             type: 'text'
         };
     },
@@ -36,7 +51,9 @@ var ChatInput = React.createClass({
     getSendButtonProps: function () {
         return {
             bsStyle: 'primary',
-            className: 'chat-input--send-button'
+            className: 'chat-input--send-button',
+            disabled: this.props.disabled,
+            onClick: this.handleSendButtonClick
         };
     },
 
@@ -48,6 +65,24 @@ var ChatInput = React.createClass({
         classes[this.props.className] = this.props.className;
 
         return classNames(classes);
+    },
+
+    handleSendButtonClick: function () {
+        var inputValue = this.refs.messageInput.getValue().trim();
+
+        if (this.props.onSendButtonClick && !_.isEmpty(inputValue)) {
+            this.props.onSendButtonClick(inputValue);
+        }
+
+        this.clearInputValue();
+    },
+
+    handleInputChange: function (event) {
+        this.setState({inputValue: event.target.value});
+    },
+
+    clearInputValue: function () {
+        this.setState({inputValue: ''});
     }
 });
 

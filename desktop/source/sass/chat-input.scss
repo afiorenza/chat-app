@@ -1,11 +1,12 @@
 .chat-input {
 
     &--input-wrapper {
-        width: 1000px;
         display: inline-block;
+        width: 85%;
     }
 
     &--send-button{
-        margin-left: 15px;
+        margin-left: 10px;
+        position: absolute;
     }
 }
