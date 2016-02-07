@@ -1,5 +1,10 @@
 var React = require('react');
+var ReactBootstrap = require('react-bootstrap');
 var classNames = require('classnames');
+
+// React Bootstrap components
+var ListGroup = ReactBootstrap.ListGroup;
+var ListGroupItem = ReactBootstrap.ListGroupItem;
 
 var ChatList = React.createClass({
 
@@ -7,21 +12,24 @@ var ChatList = React.createClass({
         messages: React.PropTypes.array
     },
 
+    componentDidUpdate: function () {
+    },
+
     render: function () {
         return (
             <div {...this.getProps()}>
-                <ul className="chat-list--list">
+                <ListGroup className="chat-list--list">
                     {this.props.messages.map(this.renderMessage)}
-                </ul>
+                </ListGroup>
             </div>
         )
     },
 
     renderMessage: function (message, index) {
         return (
-            <li {...this.getMessageProps(message, index)}>
+            <ListGroupItem {...this.getMessageProps(message, index)}>
                 {message.data}
-            </li>
+            </ListGroupItem>
         );
     },
 

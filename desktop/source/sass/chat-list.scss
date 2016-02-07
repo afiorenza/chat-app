@@ -1,10 +1,13 @@
 .chat-list {
 
-    &--list {}
+    &--list {
+        height: 700px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     &--message {
         font-size: 16px;
-        padding: 7px;
 
         &:nth-child(even) {
             background-color: lightskyblue;

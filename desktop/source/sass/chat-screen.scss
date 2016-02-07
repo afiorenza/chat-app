@@ -10,6 +10,7 @@
 
     &--left-block {
         display: inline-block;
+        //height: 100%;
         width: 77%;
     }
 
@@ -28,9 +29,13 @@
         }
     }
 
+    &--wrapper {
+        //height: 99%;
+    }
 
     &--right-block {
         display: inline-block;
+        float: right;
         width: 20%;
     }
 }

@@ -43,8 +43,8 @@ var ChatScreen = React.createClass({
     render: function () {
         return (
             <div {...this.getProps()}>
+                {this.renderNavBar()}
                 <div className="chat-screen--left-block">
-                    {this.renderNavBar()}
                     {this.renderChatList()}
                     {this.renderChatInput()}
                     {this.renderServerState()}

@@ -1,5 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
+var keyCode = require('keycode');
 var _ = require('lodash');
 
 // React-Bootstrap components
@@ -41,6 +42,7 @@ var ChatInput = React.createClass({
             className: 'chat-input--input',
             disabled: this.props.disabled,
             onChange: this.handleInputChange,
+            onKeyDown: this.handleInputKeyDown,
             placeholder: 'Enter text...',
             ref: 'messageInput',
             value: this.state.inputValue,
@@ -79,6 +81,12 @@ var ChatInput = React.createClass({
 
     handleInputChange: function (event) {
         this.setState({inputValue: event.target.value});
+    },
+
+    handleInputKeyDown: function (event) {
+        if (event.keyCode === keyCode.code.enter) {
+            this.handleSendButtonClick();
+        }
     },
 
     clearInputValue: function () {
