@@ -16,10 +16,13 @@ wsServer.on('request', function(request) {
     var index = clients.push(connection) - 1;
 
     connection.on('message', function(message) {
+
         if (message.type === 'utf8') {
-            _.mapValues(clients, function (client) {
-                client.sendUTF(message.utf8Data)
-            });
+            //_.mapValues(clients, function (client) {
+            //    client.sendUTF(message.utf8Data);
+            //});
+
+            connection.sendUTF(message.utf8Data);
         }
     });
 
