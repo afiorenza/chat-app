@@ -4,13 +4,11 @@
     margin-right:auto;
     margin-top:50px;
     padding: 10px;
-    width: 80%;
 
     &--input-block {}
 
     &--left-block {
         display: inline-block;
-        //height: 100%;
         width: 77%;
     }
 
@@ -29,9 +27,7 @@
         }
     }
 
-    &--wrapper {
-        //height: 99%;
-    }
+    &--wrapper {}
 
     &--right-block {
         display: inline-block;

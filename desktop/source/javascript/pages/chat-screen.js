@@ -1,7 +1,7 @@
 var React = require('react');
 var classNames = require('classnames');
 
-// React-Bootstrap components
+// React Bootstrap components
 var Navbar = require('react-bootstrap').Navbar;
 
 // Component
@@ -17,7 +17,8 @@ var ChatScreen = React.createClass({
     getInitialState: function () {
         return {
             messages: [],
-            serviceState: 'Error connecting with the service'
+            serviceState: 'Error connecting with the service',
+            userName: undefined
         };
     },
 
@@ -32,7 +33,7 @@ var ChatScreen = React.createClass({
         chatService.receiveMessage(function (message) {
             var newMessages = this.state.messages;
 
-            newMessages.push(message);
+            newMessages.push(message.data);
 
             this.setState({
                messages: newMessages
@@ -141,6 +142,17 @@ var ChatScreen = React.createClass({
     sendMessage: function (message) {
         chatService.sendMessage(message);
     }
+
+    /*  ,
+        showModal: function () {
+            return !(this.state.userName);
+        },
+
+        handleModalClose: function (userName) {
+            this.setState({
+               userName: userName
+        });
+    }*/
 });
 
 module.exports = ChatScreen;

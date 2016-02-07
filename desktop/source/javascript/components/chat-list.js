@@ -26,9 +26,11 @@ var ChatList = React.createClass({
     },
 
     renderMessage: function (message, index) {
+        message = JSON.parse(message);
+
         return (
             <ListGroupItem {...this.getMessageProps(message, index)}>
-                {message.data}
+                {message.data.text}
             </ListGroupItem>
         );
     },
@@ -42,7 +44,10 @@ var ChatList = React.createClass({
     getMessageProps: function (message, index) {
         return {
             className: 'chat-list--message',
-            key: index
+            key: index,
+            style: {
+                'backgroundColor': message.data.color
+            }
         };
     },
 
