@@ -11,6 +11,7 @@ var ChatUsers = require('../components/chat-users');
 
 // Services
 var chatService = require('../services/chat-service');
+var chatServiceInstance = {};
 
 var ChatScreen = React.createClass({
 
@@ -26,16 +27,16 @@ var ChatScreen = React.createClass({
     },
 
     componentDidMount: function () {
-        chatService.initialize(this.props.userName);
+        chatServiceInstance = new chatService(this.props.userName);
 
-        chatService.onConnect(function (serviceState) {
+        chatServiceInstance.onConnect(function (serviceState) {
             this.setState({
                 serviceState: serviceState
             });
         }.bind(this));
 
 
-        chatService.receiveMessage(function (message) {
+        chatServiceInstance.receiveMessage(function (message) {
             var newMessages = this.state.messages;
 
             newMessages.push(message.data);
@@ -47,7 +48,7 @@ var ChatScreen = React.createClass({
     },
 
     componentWillUnmount: function () {
-        chatService.onDisconnect();
+        chatServiceInstance.onDisconnect();
     },
 
     render: function () {
@@ -150,7 +151,7 @@ var ChatScreen = React.createClass({
     },
 
     sendMessage: function (message) {
-        chatService.sendMessage(message);
+        chatServiceInstance.sendMessage(message);
     }
 });
 

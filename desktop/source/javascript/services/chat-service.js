@@ -1,61 +1,78 @@
 window.WebSocket = window.WebSocket || window.MozWebSocket;
-var connection;
 
-var chatService = {
+var chatService = function (user) {
+    this.user = user;
+};
 
-    initialize: function (user) {
-        this.user = user;
-    },
+chatService.prototype.setConnection = function (connection) {
+    this.connection = connection;
+};
 
-    onConnect: function (callback) {
-        connection = new WebSocket('ws://192.168.0.32:3000');
+chatService.prototype.getConnection = function () {
+    return this.connection;
+};
 
-        connection.onopen = function () {
-            connection.send(
-                JSON.stringify({
-                    'type': 'user-connected',
-                    'user': this.user
-                })
-            );
+chatService.prototype.onConnect = function (callback) {
+    this.setConnection(new WebSocket('ws://192.168.0.32:3000'));
 
-            if (callback) {
-                callback('success');
-            }
-        }.bind(this);
-
-        connection.onerror = function () {
-            if (callback) {
-                callback('error');
-            }
-        };
-    },
-
-    onDisconnect: function () {
-        connection.send(
+    this.getConnection().onopen = function () {
+        this.getConnection().send(
             JSON.stringify({
-            'type': 'user-disconnected',
-            'user': this.user
-            })
-        );
-    },
-
-    receiveMessage: function (callback) {
-        connection.onmessage = function (message) {
-            if(callback && message) {
-                callback(message);
-            }
-        }.bind(this);
-    },
-
-    sendMessage: function (message) {
-        connection.send(
-            JSON.stringify({
-                'data': message,
-                'type': 'message-retrieve',
+                'type': 'user-connected',
                 'user': this.user
             })
         );
-    }
+
+        if (callback) {
+            callback('success');
+        }
+    }.bind(this);
+
+    this.getConnection().onerror = function () {
+        if (callback) {
+            callback('error');
+        }
+    };
+};
+
+chatService.prototype.onDisconnect = function () {
+    this.getConnection().send(
+        JSON.stringify({
+            'type': 'user-disconnected',
+            'user': this.user
+        })
+    );
+};
+
+chatService.prototype.receiveMessage = function (callback) {
+    this.getConnection().onmessage = function (message) {
+        var parsedMessage = JSON.parse(message.data);
+
+        switch (parsedMessage.type) {
+            case 'message':
+                break;
+
+            case 'connected-users':
+                break;
+
+            default:
+                break;
+        }
+
+        if(callback && message) {
+            callback(message);
+        }
+    }.bind(this);
+};
+
+chatService.prototype.sendMessage = function (message) {
+    this.getConnection().send(
+        JSON.stringify({
+            'data': message,
+            'type': 'message-retrieve',
+            'user': this.user
+        })
+    );
 };
 
 module.exports = chatService;
