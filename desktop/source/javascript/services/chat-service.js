@@ -44,23 +44,28 @@ chatService.prototype.onDisconnect = function () {
     );
 };
 
-chatService.prototype.receiveMessage = function (callback) {
+chatService.prototype.receiveMessage = function (messageReceived, userConnection) {
     this.getConnection().onmessage = function (message) {
-        var parsedMessage = JSON.parse(message.data);
+
+        if (message.data) {
+            var parsedMessage = JSON.parse(message.data);
+        }
 
         switch (parsedMessage.type) {
             case 'message':
+                if(messageReceived && message) {
+                    messageReceived(parsedMessage.data);
+                }
                 break;
 
             case 'connected-users':
+                if(userConnection && message) {
+                    userConnection(parsedMessage.data);
+                }
                 break;
 
             default:
                 break;
-        }
-
-        if(callback && message) {
-            callback(message);
         }
     }.bind(this);
 };

@@ -22,7 +22,8 @@ var ChatScreen = React.createClass({
     getInitialState: function () {
         return {
             messages: [],
-            serviceState: undefined
+            serviceState: undefined,
+            usersConnected: []
         };
     },
 
@@ -36,15 +37,23 @@ var ChatScreen = React.createClass({
         }.bind(this));
 
 
-        chatServiceInstance.receiveMessage(function (message) {
+        var messageReceived =  function (message) {
             var newMessages = this.state.messages;
-
-            newMessages.push(message.data);
+            console.log('message ', message);
+            newMessages.push(message);
 
             this.setState({
-               messages: newMessages
+                messages: newMessages
             });
-        }.bind(this));
+        }.bind(this);
+
+        var userConnection = function (user) {
+            this.setState({
+                usersConnected: user.users
+            });
+        }.bind(this);
+
+        chatServiceInstance.receiveMessage(messageReceived, userConnection);
     },
 
     componentWillUnmount: function () {
@@ -90,14 +99,8 @@ var ChatScreen = React.createClass({
     },
 
     renderChatUsers: function () {
-        var users = [
-            {'name': 'mock 1'},
-            {'name': 'mock 2'},
-            {'name': 'mock 3'},
-            {'name': 'mock 4'}
-        ];
         return (
-            <ChatUsers users={users} />
+            <ChatUsers users={this.state.usersConnected} />
         );
     },
 

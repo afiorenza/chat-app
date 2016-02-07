@@ -50,9 +50,9 @@ wsServer.on('request', function(request) {
 
 function retrieveMessage (message) {
 
-    for (var index = 0; index < clients.length; index++) {
+    clients.map(function (client, index) {
 
-        clients[index].connection.sendUTF(
+        client.connection.sendUTF(
             JSON.stringify({
                 type: 'message',
                 data: {
@@ -62,7 +62,7 @@ function retrieveMessage (message) {
                 }
             })
         );
-    }
+    });
 }
 
 function userConnection (connection, message) {
@@ -72,15 +72,17 @@ function userConnection (connection, message) {
 
     clients.push(user);
 
-    connection.sendUTF(
-        JSON.stringify({
-            type: 'connected-users',
-            data: {
-                total: connectedUsers.length,
-                users: connectedUsers
-            }
-        })
-    );
+    clients.map(function (client) {
+        client.connection.sendUTF(
+            JSON.stringify({
+                type: 'connected-users',
+                data: {
+                    total: connectedUsers.length,
+                    users: connectedUsers
+                }
+            })
+        );
+    });
 }
 
 function userDisconnection () {}
@@ -89,10 +91,10 @@ function getConnectedUsers () {
     var userNames = [];
 
     clients.map(function (client) {
-        userNames.push(client.name);
+        userNames.push({
+            'name': client.name
+        });
     });
 
     return userNames;
 }
-
-

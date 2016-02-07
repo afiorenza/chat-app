@@ -11,7 +11,7 @@ var InitialScreen = React.createClass({
 
     getInitialState: function () {
         return {
-            userName: 'adolfo hitler'
+            userName: undefined
         };
     },
 
