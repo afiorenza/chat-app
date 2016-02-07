@@ -1,6 +1,11 @@
 var http = require('http');
 var WebSocketServer = require('websocket').server;
 
+// Helpers
+var retrieveMessage = require('./helpers/retrieve-message');
+var userConnection = require('./helpers/user-connection');
+var userDisconnection = require('./helpers/user-disconnection');
+
 var clients = [];
 var colors = ['#cfd1d8', '#e7e8eb'];
 
@@ -12,28 +17,29 @@ wsServer = new WebSocketServer({
 });
 
 wsServer.on('request', function(request) {
-    console.log(request.origin);
     var connection = request.accept(null, request.origin);
-    var color = colors.shift();
-    var index = clients.push(connection) - 1;
 
     connection.on('message', function(message) {
-        var object = {
-            time: (new Date()).getTime(),
-            text: message.utf8Data,
-            color: color
-        };
-        var json = JSON.stringify({
-            type: 'message',
-            data: object
-        });
+        var parsedMessage = JSON.parse(message.utf8Data);
 
-        for (var index = 0; index < clients.length; index++) {
-            clients[index].sendUTF(json);
+        switch (parsedMessage.type) {
+            case 'message-retrieve':
+                retrieveMessage(colors, clients, parsedMessage);
+                break;
+
+            case 'user-connected':
+                userConnection(colors, clients, connection, parsedMessage);
+                break;
+
+            case 'user-disconnected':
+                userDisconnection(clients, parsedMessage);
+
+            default:
+                return null;
+                break;
         }
     });
 
     connection.on('close', function() {
-        clients.splice(index, 1);
     });
 });
