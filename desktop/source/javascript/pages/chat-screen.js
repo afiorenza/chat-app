@@ -39,7 +39,7 @@ var ChatScreen = React.createClass({
 
         var messageReceived =  function (message) {
             var newMessages = this.state.messages;
-            console.log('message ', message);
+
             newMessages.push(message);
 
             this.setState({
@@ -54,10 +54,6 @@ var ChatScreen = React.createClass({
         }.bind(this);
 
         chatServiceInstance.receiveMessage(messageReceived, userConnection);
-    },
-
-    componentWillUnmount: function () {
-        chatServiceInstance.onDisconnect();
     },
 
     render: function () {

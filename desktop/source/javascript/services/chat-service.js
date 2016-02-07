@@ -35,24 +35,17 @@ chatService.prototype.onConnect = function (callback) {
     };
 };
 
-chatService.prototype.onDisconnect = function () {
-    this.getConnection().send(
-        JSON.stringify({
-            'type': 'user-disconnected',
-            'user': this.user
-        })
-    );
-};
-
 chatService.prototype.receiveMessage = function (messageReceived, userConnection) {
     this.getConnection().onmessage = function (message) {
 
         if (message.data) {
             var parsedMessage = JSON.parse(message.data);
         }
-
+        console.log('type: ', parsedMessage.type);
+        console.log('data: ', parsedMessage.data);
         switch (parsedMessage.type) {
-            case 'message':
+            case 'message-retrieve':
+                console.log('recibio mensaje');
                 if(messageReceived && message) {
                     messageReceived(parsedMessage.data);
                 }

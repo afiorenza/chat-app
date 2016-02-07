@@ -21,6 +21,7 @@ wsServer = new WebSocketServer({
 
 wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
+    var index;
 
     connection.on('message', function(message) {
         var parsedMessage = JSON.parse(message.utf8Data);
@@ -31,7 +32,7 @@ wsServer.on('request', function(request) {
                 break;
 
             case 'user-connected':
-                userConnection(connection, parsedMessage);
+                index = userConnection(connection, parsedMessage);
                 break;
 
             case 'user-disconnected':
@@ -45,6 +46,9 @@ wsServer.on('request', function(request) {
     });
 
     connection.on('close', function() {
+        clients.splice(index - 1, 1);
+
+        sendConnectedUsers();
     });
 });
 
@@ -54,7 +58,7 @@ function retrieveMessage (message) {
 
         client.connection.sendUTF(
             JSON.stringify({
-                type: 'message',
+                type: 'message-retrieve',
                 data: {
                     time: (new Date()).getTime(),
                     text: message.data,
@@ -67,10 +71,18 @@ function retrieveMessage (message) {
 
 function userConnection (connection, message) {
     var color = colors.shift();
-    var connectedUsers = getConnectedUsers();
     var user = new userClass(message.user, color, connection);
 
     clients.push(user);
+    sendConnectedUsers();
+
+    return clients.length;
+}
+
+function userDisconnection () {}
+
+function sendConnectedUsers () {
+    var connectedUsers = getConnectedUsers();
 
     clients.map(function (client) {
         client.connection.sendUTF(
@@ -84,8 +96,6 @@ function userConnection (connection, message) {
         );
     });
 }
-
-function userDisconnection () {}
 
 function getConnectedUsers () {
     var userNames = [];
