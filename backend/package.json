@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.10.2",
-    "socket.io": "^1.4.5"
+    "websocket": "^1.0.22"
+  },
+  "devDependencies": {
+    "lodash": "^4.2.1"
   }
 }

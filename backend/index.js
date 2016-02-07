@@ -1,15 +1,29 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require('http');
+var WebSocketServer = require('websocket').server;
+var _ = require('lodash');
 
-app.get('/', function (request, response) {
-    response.send('<h1>Hello socket io</h1>');
+var clients = [];
+
+var server = http.createServer(function(request, response) {});
+server.listen(3000, function() { });
+
+wsServer = new WebSocketServer({
+    httpServer: server
 });
 
-io.on('connection', function (socket) {
-    console.log('user connected');
-});
+wsServer.on('request', function(request) {
+    var connection = request.accept(null, request.origin);
+    var index = clients.push(connection) - 1;
 
-http.listen(3000, function () {
-    console.log('Listening on *:3000');
+    connection.on('message', function(message) {
+        if (message.type === 'utf8') {
+            _.mapValues(clients, function (client) {
+                client.sendUTF(message.utf8Data)
+            });
+        }
+    });
+
+    connection.on('close', function() {
+        clients.splice(index, 1);
+    });
 });
