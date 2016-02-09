@@ -3,9 +3,9 @@ var	browserify = require('browserify');
 var browserSync = require('browser-sync');
 var changed = require('gulp-changed');
 var	concat = require('gulp-concat');
+var esLint = require('gulp-eslint');
 var exec = require('gulp-exec');
 var	gulp = require('gulp');
-var jsHint = require('gulp-jshint');
 var	reactify = require('reactify');
 var	run = require('run-sequence');
 var	sass = require('gulp-sass');
@@ -91,7 +91,7 @@ gulp.task('browser-sync', function () {
 
 gulp.task('run-service', function () {
 
-    exec('node backend/index.js', function (error, stdout, stderr) {
+    exec('node ../backend/index.js', function (error, stdout, stderr) {
         console.log('Error: ', error);
         console.log('stdout: ', stdout);
         console.log('stderr: ', stderr);
@@ -99,11 +99,11 @@ gulp.task('run-service', function () {
 });
 
 gulp.task('lint', function () {
-    gulp.src(config.js.main)
-        .pipe(jsHint())
-        .pipe(jsHint.reporter('default'));
+    gulp.src(config.js.watch)
+        .pipe(esLint())
+        .pipe(esLint.format());
 });
 
-gulp.task('default', function () {
-    run('html', 'sass', 'js', /*'run-service',*/'browser-sync');
+gulp.task('default', /*['lint'],*/ function () {
+    run('html', 'sass', 'js', 'run-service', 'browser-sync');
 });
