@@ -23,6 +23,7 @@
     "karma-browserify": "^4.4.2",
     "karma-phantomjs-launcher": "^0.2.2",
     "keycode": "^2.1.0",
+    "local-storage": "^1.4.2",
     "object-assign": "^4.0.1",
     "phantomjs": "^1.9.19",
     "react-bootstrap": "^0.28.1",

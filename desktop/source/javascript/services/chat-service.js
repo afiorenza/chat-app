@@ -39,20 +39,21 @@ chatService.prototype.onConnect = function (callback) {
 
 chatService.prototype.receiveMessage = function (messageReceived, userConnection) {
     this.getConnection().onmessage = function (message) {
+        var parsedMessage;
 
         if (message.data) {
-            var parsedMessage = JSON.parse(message.data);
+            parsedMessage = JSON.parse(message.data);
         }
 
         switch (parsedMessage.type) {
             case constants.MESSAGE_RETRIEVE:
-                if(messageReceived && message) {
+                if(messageReceived && parsedMessage) {
                     messageReceived(parsedMessage.data);
                 }
                 break;
 
             case constants.USER_CONNECTIONS:
-                if(userConnection && message) {
+                if(userConnection && parsedMessage) {
                     userConnection(parsedMessage.data);
                 }
                 break;

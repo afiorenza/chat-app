@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactBootstrap = require('react-bootstrap');
 var classNames = require('classnames');
+var ls = require('local-storage');
 
 // React Bootstrap components
 var ListGroup = ReactBootstrap.ListGroup;
@@ -44,7 +45,8 @@ var ChatList = React.createClass({
             className: 'chat-list--message',
             key: index,
             style: {
-                'backgroundColor': (message.color) ? message.color : null
+                'backgroundColor': (message.color) ? message.color : null,
+                'textAlign': this.isMessageFromLocalUser(message) ? 'right' : null
             }
         };
     },
@@ -57,6 +59,10 @@ var ChatList = React.createClass({
         classes[this.props.className] = this.props.className;
 
         return classNames(classes);
+    },
+
+    isMessageFromLocalUser: function (message) {
+        return (ls.get('user') === message.user);
     }
 });
 

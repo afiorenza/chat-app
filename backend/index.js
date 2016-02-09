@@ -11,8 +11,18 @@ var constants = require('./constants');
 var userClass = require('./classes/user');
 
 var clients = [];
-var colors = ['#cfd1d8', '#e7e8eb'];
-
+var colors = [
+    '#cfd1d8',
+    '#e7e8eb',
+    '#C1CDCD',
+    '#C0D9D9',
+    '#528B8B',
+    '#79CDCD',
+    '#ADEAEA',
+    '#8DEEEE',
+    '#97FFFF',
+    '#BBFFFF'
+];
 var server = http.createServer(function(request, response) {});
 server.listen(3000, function() { });
 
@@ -22,18 +32,18 @@ wsServer = new WebSocketServer({
 
 wsServer.on('request', function(request) {
     var connection = request.accept(null, request.origin);
-    var index;
+    var clientIndex;
 
     connection.on('message', function(message) {
         var parsedMessage = JSON.parse(message.utf8Data);
 
         switch (parsedMessage.type) {
             case constants.MESSAGE_RETRIEVE:
-                retrieveMessage(parsedMessage);
+                retrieveMessage(parsedMessage, clientIndex);
                 break;
 
             case constants.USER_CONNECTED:
-                index = userConnection(connection, parsedMessage);
+                clientIndex = userConnection(connection, parsedMessage);
                 break;
 
             default:
@@ -43,23 +53,23 @@ wsServer.on('request', function(request) {
     });
 
     connection.on('close', function() {
-        clients.splice(index - 1, 1);
+        clients.splice(clientIndex, 1);
 
         sendConnectedUsers();
     });
 });
 
-function retrieveMessage (message) {
+function retrieveMessage (message, clientIndex) {
 
-    clients.map(function (client, index) {
-
+    clients.map(function (client) {
         client.connection.sendUTF(
             JSON.stringify({
                 type: constants.MESSAGE_RETRIEVE,
                 data: {
-                    time: (new Date()).getTime(),
+                    color: clients[clientIndex].color,
                     text: message.data,
-                    color: clients[index].color
+                    time: (new Date()).getTime(),
+                    user: clients[clientIndex].name
                 }
             })
         );
@@ -73,7 +83,7 @@ function userConnection (connection, message) {
     clients.push(user);
     sendConnectedUsers();
 
-    return clients.length;
+    return clients.length - 1;
 }
 
 function sendConnectedUsers () {

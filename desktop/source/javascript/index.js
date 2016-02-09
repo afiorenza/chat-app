@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ls = require('local-storage');
 
 // Pages
 var ChatScreen = require('./pages/chat-screen');
@@ -26,6 +27,8 @@ var InitialScreen = React.createClass({
     },
 
     handleModalClose: function (userName) {
+        ls.set('user', userName);
+
         this.setState({
             userName: userName
         });
