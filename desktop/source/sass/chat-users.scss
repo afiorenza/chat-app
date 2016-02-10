@@ -1,2 +1,14 @@
 .chat-users {
+
+    &--list {
+        height: 700px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        &-item {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
 }

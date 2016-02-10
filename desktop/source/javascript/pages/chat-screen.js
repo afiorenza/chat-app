@@ -22,7 +22,8 @@ var ChatScreen = React.createClass({
     getInitialState: function () {
         return {
             messages: [],
-            serviceState: undefined
+            serviceState: undefined,
+            usersConnected: []
         };
     },
 
@@ -36,19 +37,23 @@ var ChatScreen = React.createClass({
         }.bind(this));
 
 
-        chatServiceInstance.receiveMessage(function (message) {
+        var messageReceived =  function (message) {
             var newMessages = this.state.messages;
 
-            newMessages.push(message.data);
+            newMessages.push(message);
 
             this.setState({
-               messages: newMessages
+                messages: newMessages
             });
-        }.bind(this));
-    },
+        }.bind(this);
 
-    componentWillUnmount: function () {
-        chatServiceInstance.onDisconnect();
+        var userConnection = function (user) {
+            this.setState({
+                usersConnected: user.users
+            });
+        }.bind(this);
+
+        chatServiceInstance.receiveMessage(messageReceived, userConnection);
     },
 
     render: function () {
@@ -90,14 +95,8 @@ var ChatScreen = React.createClass({
     },
 
     renderChatUsers: function () {
-        var users = [
-            {'name': 'mock 1'},
-            {'name': 'mock 2'},
-            {'name': 'mock 3'},
-            {'name': 'mock 4'}
-        ];
         return (
-            <ChatUsers users={users} />
+            <ChatUsers users={this.state.usersConnected} />
         );
     },
 
@@ -105,7 +104,7 @@ var ChatScreen = React.createClass({
         return {
             className: 'chat-screen--input-block',
             disabled: (this.state.serviceState === 'error'),
-            onSendButtonClick: this.sendMessage,
+            onSendButtonClick: this.handleSendButtonClick,
             username: this.props.userName
         };
     },
@@ -150,7 +149,7 @@ var ChatScreen = React.createClass({
         return messages[this.state.serviceState];
     },
 
-    sendMessage: function (message) {
+    handleSendButtonClick: function (message) {
         chatServiceInstance.sendMessage(message);
     }
 });
