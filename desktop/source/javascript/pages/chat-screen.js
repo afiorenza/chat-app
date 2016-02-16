@@ -47,9 +47,9 @@ var ChatScreen = React.createClass({
             });
         }.bind(this);
 
-        var userConnection = function (user) {
+        var userConnection = function (client) {
             this.setState({
-                usersConnected: user.users
+                usersConnected: client.clients
             });
         }.bind(this);
 

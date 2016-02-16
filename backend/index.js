@@ -2,27 +2,14 @@ var http = require('http');
 var WebSocketServer = require('websocket').server;
 var constants = require('./constants');
 
+// Store
+var clientStore = require('./client/client-store');
+
 // Helpers Todo: manage how make this work with references.
 //var retrieveMessage = require('./helpers/retrieve-message');
-//var userConnection = require('./helpers/user-connection');
-//var userDisconnection = require('./helpers/user-disconnection');
+//var clientConnection = require('./helpers/client-connection');
+//var clientDisconnection = require('./helpers/client-disconnection');
 
-// Classes
-var userClass = require('./classes/user');
-
-var clients = [];
-var colors = [
-    '#cfd1d8',
-    '#e7e8eb',
-    '#C1CDCD',
-    '#C0D9D9',
-    '#528B8B',
-    '#79CDCD',
-    '#ADEAEA',
-    '#8DEEEE',
-    '#97FFFF',
-    '#BBFFFF'
-];
 var server = http.createServer(function(request, response) {});
 server.listen(3000, function() {console.log('up and running!');});
 
@@ -43,7 +30,7 @@ wsServer.on('request', function(request) {
                 break;
 
             case constants.USER_CONNECTED:
-                clientIndex = userConnection(connection, parsedMessage);
+                clientIndex = clientStore.addClient(connection, parsedMessage);
                 break;
 
             default:
@@ -53,63 +40,38 @@ wsServer.on('request', function(request) {
     });
 
     connection.on('close', function() {
-        clients.splice(clientIndex, 1);
-
-        sendConnectedUsers();
+        clientStore.removeClient(clientIndex);
     });
 });
 
-function retrieveMessage (message, clientIndex) {
-
-    clients.map(function (client) {
-        client.connection.sendUTF(
-            JSON.stringify({
-                type: constants.MESSAGE_RETRIEVE,
-                data: {
-                    color: clients[clientIndex].color,
-                    text: message.data,
-                    time: (new Date()).getTime(),
-                    user: clients[clientIndex].name
-                }
-            })
-        );
-    });
-}
-
-function userConnection (connection, message) {
-    var color = colors.shift();
-    var user = new userClass(message.user, color, connection);
-
-    clients.push(user);
-    sendConnectedUsers();
-
-    return clients.length - 1;
-}
-
-function sendConnectedUsers () {
-    var connectedUsers = getConnectedUsers();
-
-    clients.map(function (client) {
+clientStore.addChangeListener(function () {
+    clientStore.getClients().map(function (client) {
         client.connection.sendUTF(
             JSON.stringify({
                 type: constants.USER_CONNECTIONS,
                 data: {
-                    total: connectedUsers.length,
-                    users: connectedUsers
+                    total: clientStore.getLength(),
+                    clients: clientStore.getConnectedClients()
                 }
             })
         );
     });
-}
+});
 
-function getConnectedUsers () {
-    var userNames = [];
+function retrieveMessage (message, clientIndex) {
+    var clients = clientStore.getClients();
 
-    clients.map(function (client) {
-        userNames.push({
-            'name': client.name
-        });
+    clientStore.getClients().map(function (client) {
+        client.connection.sendUTF(
+            JSON.stringify({
+                type: constants.MESSAGE_RETRIEVE,
+                data: {
+                    color: [clientIndex].color,
+                    text: message.data,
+                    time: (new Date()).getTime(),
+                    client: clients[clientIndex].name
+                }
+            })
+        );
     });
-
-    return userNames;
 }

@@ -27,6 +27,7 @@ var ChatList = React.createClass({
     },
 
     renderMessage: function (message, index) {
+        console.log(message);
         return (
             <ListGroupItem {...this.getMessageProps(message, index)}>
                 {message.text}
@@ -62,7 +63,7 @@ var ChatList = React.createClass({
     },
 
     isMessageFromLocalUser: function (message) {
-        return (ls.get('user') === message.user);
+        return (ls.get('user') === message.client);
     }
 });
 
