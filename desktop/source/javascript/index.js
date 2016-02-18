@@ -10,12 +10,6 @@ var GetNameModal = require('./components/get-name-modal');
 
 var InitialScreen = React.createClass({
 
-    getInitialState: function () {
-        return {
-            userName: undefined
-        };
-    },
-
     render: function () {
         return (this.state.userName) ?
             <ChatScreen userName={this.state.userName} /> :
