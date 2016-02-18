@@ -13,9 +13,6 @@ var ChatList = React.createClass({
         messages: React.PropTypes.array
     },
 
-    componentDidUpdate: function () {
-    },
-
     render: function () {
         return (
             <div {...this.getProps()}>
@@ -27,7 +24,6 @@ var ChatList = React.createClass({
     },
 
     renderMessage: function (message, index) {
-        console.log(message);
         return (
             <ListGroupItem {...this.getMessageProps(message, index)}>
                 {message.text}

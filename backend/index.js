@@ -66,7 +66,7 @@ function retrieveMessage (message, clientIndex) {
             JSON.stringify({
                 type: constants.MESSAGE_RETRIEVE,
                 data: {
-                    color: [clientIndex].color,
+                    color: clients[clientIndex].color,
                     text: message.data,
                     time: (new Date()).getTime(),
                     client: clients[clientIndex].name

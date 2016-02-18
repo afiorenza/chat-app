@@ -22,12 +22,10 @@ var clientStore = _.extend({}, EventEmitter.prototype, {
         this.emit('change');
     },
 
-    // Add change listener
     addChangeListener: function(callback) {
         this.on('change', callback);
     },
 
-    // Remove change listener
     removeChangeListener: function(callback) {
         this.removeListener('change', callback);
     },
