@@ -90,12 +90,13 @@ gulp.task('browser-sync', function () {
 });
 
 gulp.task('run-service', function () {
-
-    exec('node ../backend/index.js', function (error, stdout, stderr) {
-        console.log('Error: ', error);
-        console.log('stdout: ', stdout);
-        console.log('stderr: ', stderr);
-    });
+    if (argv.prod) {
+        exec('node ../backend/index.js', function (error, stdout, stderr) {
+            console.log('Error: ', error);
+            console.log('stdout: ', stdout);
+            console.log('stderr: ', stderr);
+        });
+    }
 });
 
 gulp.task('lint', function () {
