@@ -13,9 +13,6 @@ var ChatList = React.createClass({
         messages: React.PropTypes.array
     },
 
-    componentDidUpdate: function () {
-    },
-
     render: function () {
         return (
             <div {...this.getProps()}>
@@ -62,7 +59,7 @@ var ChatList = React.createClass({
     },
 
     isMessageFromLocalUser: function (message) {
-        return (ls.get('user') === message.user);
+        return (ls.get('user') === message.client);
     }
 });
 
