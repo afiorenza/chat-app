@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ls = require('local-storage');
+var _ = require('lodash');
 
 // Pages
 var ChatScreen = require('./pages/chat-screen');
@@ -10,8 +11,14 @@ var GetNameModal = require('./components/get-name-modal');
 
 var InitialScreen = React.createClass({
 
+    getInitialState: function () {
+        return {
+            userName: undefined
+        };
+    },
+
     render: function () {
-        return (this.state.userName) ?
+        return (!_.isUndefined(this.state.userName)) ?
             <ChatScreen userName={this.state.userName} /> :
             <GetNameModal onClose={this.handleModalClose} show={this.showModal()} />;
     },
