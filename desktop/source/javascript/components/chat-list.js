@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var ReactBootstrap = require('react-bootstrap');
 var classNames = require('classnames');
 var ls = require('local-storage');
@@ -7,17 +8,44 @@ var ls = require('local-storage');
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
 
+// Store
+var messageStore = require('../stores/message-store');
+
 var ChatList = React.createClass({
 
-    propTypes: {
-        messages: React.PropTypes.array
+    getInitialState: function () {
+        return {
+            messages: []
+        };
+    },
+
+    componentDidMount: function () {
+        messageStore.addChangeListener(this.handleReceiveMessage);
+    },
+
+    componentDidUpdate: function() {
+        var node = ReactDOM.findDOMNode(this).childNodes[0];
+
+        if (node.clientHeight < node.scrollHeight ) {
+            node.scrollTop = node.scrollHeight;
+        }
+    },
+
+    componentWillUnmount: function () {
+        messageStore.removeChangeListener(this.handleReceiveMessage);
+    },
+
+    handleReceiveMessage: function () {
+        this.setState({
+            messages: messageStore.getMessages()
+        });
     },
 
     render: function () {
         return (
             <div {...this.getProps()}>
                 <ListGroup className="chat-list--list">
-                    {this.props.messages.map(this.renderMessage)}
+                    {this.state.messages.map(this.renderMessage)}
                 </ListGroup>
             </div>
         )

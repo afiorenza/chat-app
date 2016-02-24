@@ -4,7 +4,7 @@ var browserSync = require('browser-sync');
 var changed = require('gulp-changed');
 var	concat = require('gulp-concat');
 var esLint = require('gulp-eslint');
-var exec = require('gulp-exec');
+var exec = require('child_process').exec;
 var	gulp = require('gulp');
 var	reactify = require('reactify');
 var	run = require('run-sequence');
@@ -90,12 +90,13 @@ gulp.task('browser-sync', function () {
 });
 
 gulp.task('run-service', function () {
-
-    exec('node ../backend/index.js', function (error, stdout, stderr) {
-        console.log('Error: ', error);
-        console.log('stdout: ', stdout);
-        console.log('stderr: ', stderr);
-    });
+    if (argv.prod) {
+        exec('node ../backend/index.js', function (error, stdout, stderr) {
+            console.log('Error: ', error);
+            console.log('stdout: ', stdout);
+            console.log('stderr: ', stderr);
+        });
+    }
 });
 
 gulp.task('lint', function () {

@@ -13,6 +13,9 @@ var ChatUsers = require('../components/chat-users');
 var chatService = require('../services/chat-service');
 var chatServiceInstance = {};
 
+// Stores
+var messageStore = require('../stores/message-store');
+
 var ChatScreen = React.createClass({
 
     propTypes: {
@@ -21,7 +24,6 @@ var ChatScreen = React.createClass({
 
     getInitialState: function () {
         return {
-            messages: [],
             serviceState: undefined,
             usersConnected: []
         };
@@ -38,13 +40,7 @@ var ChatScreen = React.createClass({
 
 
         var messageReceived =  function (message) {
-            var newMessages = this.state.messages;
-
-            newMessages.push(message);
-
-            this.setState({
-                messages: newMessages
-            });
+            messageStore.addMessage(message);
         }.bind(this);
 
         var userConnection = function (client) {
@@ -84,7 +80,7 @@ var ChatScreen = React.createClass({
 
     renderChatList: function () {
         return (
-            <ChatList messages={this.state.messages} />
+            <ChatList />
         );
     },
 
