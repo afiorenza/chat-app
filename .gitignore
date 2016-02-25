@@ -3,3 +3,4 @@
 /backend/node_modules
 /mobile/chatapp/node_modules
 .idea/
+/node_modules
