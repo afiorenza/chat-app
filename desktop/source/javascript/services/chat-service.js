@@ -15,6 +15,7 @@ chatService.prototype.getConnection = function () {
 };
 
 chatService.prototype.onConnect = function (callback) {
+    //TODO: See another way to do this
     var IP = 'ws://192.168.0.13:3000';
 
     this.setConnection(new WebSocket(IP));

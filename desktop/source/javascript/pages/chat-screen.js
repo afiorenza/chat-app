@@ -1,9 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
 
-// React Bootstrap components
-var Navbar = require('react-bootstrap').Navbar;
-
 // Component
 var ChatInput = require('../components/chat-input');
 var ChatList = require('../components/chat-list');
@@ -55,7 +52,6 @@ var ChatScreen = React.createClass({
     render: function () {
         return (
             <div {...this.getProps()}>
-                {this.renderNavBar()}
                 <div className="chat-screen--left-block">
                     {this.renderChatList()}
                     {this.renderChatInput()}
@@ -65,16 +61,6 @@ var ChatScreen = React.createClass({
                     {this.renderChatUsers()}
                 </div>
             </div>
-        );
-    },
-
-    renderNavBar: function () {
-        return (
-            <Navbar {...this.getNavBarProps()}>
-                <Navbar.Brand>
-                    Chat-App
-                </Navbar.Brand>
-            </Navbar>
         );
     },
 
@@ -96,15 +82,6 @@ var ChatScreen = React.createClass({
         );
     },
 
-    getChatInputProps: function () {
-        return {
-            className: 'chat-screen--input-block',
-            disabled: (this.state.serviceState === 'error'),
-            onSendButtonClick: this.handleSendButtonClick,
-            username: this.props.userName
-        };
-    },
-
     renderServerState: function () {
         return (
             <span className={this.getServerStateClass()}>
@@ -119,10 +96,12 @@ var ChatScreen = React.createClass({
         };
     },
 
-    getNavBarProps: function () {
+    getChatInputProps: function () {
         return {
-            fixedTop: true,
-            inverse: true
+            className: 'chat-screen--input-block',
+            disabled: (this.state.serviceState === 'error'),
+            onSendButtonClick: this.handleSendButtonClick,
+            username: this.props.userName
         };
     },
 
