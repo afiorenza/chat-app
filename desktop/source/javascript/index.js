@@ -16,7 +16,7 @@ var InitialScreen = React.createClass({
     getInitialState: function () {
         return {
             screen: 'chat',
-            userName: undefined
+            userName: 'agu' //undefined
         };
     },
 
@@ -28,9 +28,9 @@ var InitialScreen = React.createClass({
 
     renderScreens: function () {
         return (
-            <div>
-                <AppBar />
-                <div>
+            <div className="index">
+                <AppBar defaultScreen={this.state.screen} onItemClick={this.handleAppBarItemClick} />
+                <div className="index--screen">
                     {this.renderContent()}
                 </div>
             </div>
@@ -38,17 +38,22 @@ var InitialScreen = React.createClass({
     }, 
 
     renderContent: function () {
-        var node = null;
-        var screens: {
+        var screens = {
             'board': <CanvasScreen />,
             'chat': <ChatScreen userName={this.state.userName} />
         };
 
-        return this.state.screens[screen];
+        return screens[this.state.screen];
     },
 
     showModal: function () {
         return !(this.state.userName);
+    },
+
+    handleAppBarItemClick: function (screen) {
+        this.setState({
+            screen: screen
+        });
     },
 
     handleModalClose: function (userName) {

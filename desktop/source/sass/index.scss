@@ -1,0 +1,12 @@
+$screen-width: 1000px;
+
+.index {
+
+    &--screen {
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:50px;
+        padding: 10px;
+        width: $screen-width;
+    }
+}
