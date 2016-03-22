@@ -16,7 +16,7 @@ var InitialScreen = React.createClass({
     getInitialState: function () {
         return {
             screen: 'chat',
-            userName: 'agu' //undefined
+            userName: undefined
         };
     },
 

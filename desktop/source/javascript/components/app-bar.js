@@ -64,13 +64,13 @@ var AppBar = React.createClass({
     getBrandStyle: function () {
         return {
             color: '#00d8ff'
-        }
+        };
     },
 
     getIconStyle: function () {
         return {
             paddingRight: 10
-        }
+        };
     },
 
     handleItemClick: function (screen) {

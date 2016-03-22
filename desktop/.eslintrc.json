@@ -2,7 +2,7 @@
     "rules": {
         "indent": [
             2,
-            "tab"
+            4
         ],
         "quotes": [
             2,
@@ -15,12 +15,19 @@
         "semi": [
             2,
             "always"
+        ],
+        "no-unused-vars": [
+            0
         ]
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "commonjs": true,
+        "phantomjs": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended"
+    ],
     "ecmaFeatures": {
         "jsx": true,
         "experimentalObjectRestSpread": true

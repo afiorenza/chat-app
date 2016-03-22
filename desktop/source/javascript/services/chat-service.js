@@ -49,20 +49,20 @@ chatService.prototype.receiveMessage = function (messageReceived, userConnection
         }
 
         switch (parsedMessage.type) {
-            case constants.MESSAGE_RETRIEVE:
-                if(messageReceived && parsedMessage) {
-                    messageReceived(parsedMessage.data);
-                }
-                break;
+        case constants.MESSAGE_RETRIEVE:
+            if(messageReceived && parsedMessage) {
+                messageReceived(parsedMessage.data);
+            }
+            break;
 
-            case constants.USER_CONNECTIONS:
-                if(userConnection && parsedMessage) {
-                    userConnection(parsedMessage.data);
-                }
-                break;
+        case constants.USER_CONNECTIONS:
+            if(userConnection && parsedMessage) {
+                userConnection(parsedMessage.data);
+            }
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }.bind(this);
 };

@@ -48,7 +48,7 @@ var ChatList = React.createClass({
                     {this.state.messages.map(this.renderMessage)}
                 </ListGroup>
             </div>
-        )
+        );
     },
 
     renderMessage: function (message, index) {
